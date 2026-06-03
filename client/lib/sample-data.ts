@@ -1,0 +1,395 @@
+import type { User, Server, Channel, Message, Notification, FriendRequest, VoiceRoom } from './types';
+
+// Sample Users
+export const sampleUsers: User[] = [
+  {
+    id: 'user-1',
+    username: 'johndoe',
+    displayName: 'John Doe',
+    email: 'john@example.com',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+    bio: 'Full-stack developer passionate about building great products',
+    status: 'online',
+    createdAt: new Date('2024-01-15'),
+  },
+  {
+    id: 'user-2',
+    username: 'sarahsmith',
+    displayName: 'Sarah Smith',
+    email: 'sarah@example.com',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face',
+    bio: 'UX Designer | Creating beautiful experiences',
+    status: 'online',
+    createdAt: new Date('2024-02-20'),
+  },
+  {
+    id: 'user-3',
+    username: 'mikejohnson',
+    displayName: 'Mike Johnson',
+    email: 'mike@example.com',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+    bio: 'DevOps Engineer | Cloud enthusiast',
+    status: 'away',
+    lastSeen: new Date(Date.now() - 15 * 60 * 1000),
+    createdAt: new Date('2024-01-10'),
+  },
+  {
+    id: 'user-4',
+    username: 'emilydavis',
+    displayName: 'Emily Davis',
+    email: 'emily@example.com',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+    bio: 'Product Manager | Turning ideas into reality',
+    status: 'busy',
+    createdAt: new Date('2024-03-01'),
+  },
+  {
+    id: 'user-5',
+    username: 'alexchen',
+    displayName: 'Alex Chen',
+    email: 'alex@example.com',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face',
+    bio: 'Backend Developer | API architect',
+    status: 'offline',
+    lastSeen: new Date(Date.now() - 2 * 60 * 60 * 1000),
+    createdAt: new Date('2024-02-15'),
+  },
+  {
+    id: 'user-6',
+    username: 'lisawong',
+    displayName: 'Lisa Wong',
+    email: 'lisa@example.com',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face',
+    bio: 'Frontend Developer | React enthusiast',
+    status: 'online',
+    createdAt: new Date('2024-01-25'),
+  },
+];
+
+export const currentUser = sampleUsers[0];
+
+// Sample Messages
+export const sampleMessages: Message[] = [
+  {
+    id: 'msg-1',
+    content: 'Hey team! How is everyone doing today?',
+    senderId: 'user-2',
+    channelId: 'channel-1',
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+    reactions: [{ emoji: '👋', users: ['user-1', 'user-3'] }],
+    attachments: [],
+    readBy: ['user-1', 'user-3', 'user-4'],
+  },
+  {
+    id: 'msg-2',
+    content: 'Doing great! Just finished the new feature implementation.',
+    senderId: 'user-1',
+    channelId: 'channel-1',
+    timestamp: new Date(Date.now() - 1.5 * 60 * 60 * 1000),
+    reactions: [{ emoji: '🎉', users: ['user-2'] }, { emoji: '🔥', users: ['user-3', 'user-4'] }],
+    attachments: [],
+    readBy: ['user-2', 'user-3', 'user-4'],
+  },
+  {
+    id: 'msg-3',
+    content: 'That is awesome! Can you share a demo?',
+    senderId: 'user-3',
+    channelId: 'channel-1',
+    timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
+    reactions: [],
+    attachments: [],
+    readBy: ['user-1', 'user-2', 'user-4'],
+  },
+  {
+    id: 'msg-4',
+    content: 'Sure! Here is a screenshot of the new dashboard:',
+    senderId: 'user-1',
+    channelId: 'channel-1',
+    timestamp: new Date(Date.now() - 45 * 60 * 1000),
+    reactions: [{ emoji: '😍', users: ['user-2', 'user-3', 'user-4'] }],
+    attachments: [
+      {
+        id: 'att-1',
+        name: 'dashboard-preview.png',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
+        size: 245000,
+        thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=150&fit=crop',
+      },
+    ],
+    readBy: ['user-2', 'user-3', 'user-4'],
+    pinned: true,
+  },
+  {
+    id: 'msg-5',
+    content: 'This looks incredible! The glassmorphism effect is perfect.',
+    senderId: 'user-4',
+    channelId: 'channel-1',
+    timestamp: new Date(Date.now() - 30 * 60 * 1000),
+    reactions: [],
+    attachments: [],
+    readBy: ['user-1', 'user-2', 'user-3'],
+  },
+  {
+    id: 'msg-6',
+    content: 'Thanks everyone! I will push the changes to staging for review.',
+    senderId: 'user-1',
+    channelId: 'channel-1',
+    timestamp: new Date(Date.now() - 15 * 60 * 1000),
+    reactions: [{ emoji: '👍', users: ['user-2', 'user-3', 'user-4'] }],
+    attachments: [],
+    readBy: ['user-2', 'user-3', 'user-4'],
+  },
+  {
+    id: 'msg-7',
+    content: 'Perfect! Let me know when it is ready for QA testing.',
+    senderId: 'user-2',
+    channelId: 'channel-1',
+    timestamp: new Date(Date.now() - 5 * 60 * 1000),
+    reactions: [],
+    attachments: [],
+    readBy: ['user-1'],
+  },
+];
+
+// Sample Channels
+export const sampleChannels: Channel[] = [
+  {
+    id: 'channel-1',
+    name: 'general',
+    type: 'text',
+    description: 'General discussions and announcements',
+    members: ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6'],
+    createdAt: new Date('2024-01-01'),
+    unreadCount: 3,
+    pinnedMessages: ['msg-4'],
+  },
+  {
+    id: 'channel-2',
+    name: 'development',
+    type: 'text',
+    description: 'Technical discussions and code reviews',
+    members: ['user-1', 'user-3', 'user-5', 'user-6'],
+    createdAt: new Date('2024-01-05'),
+    unreadCount: 7,
+    pinnedMessages: [],
+  },
+  {
+    id: 'channel-3',
+    name: 'design',
+    type: 'text',
+    description: 'UI/UX discussions and design reviews',
+    members: ['user-1', 'user-2', 'user-4'],
+    createdAt: new Date('2024-01-10'),
+    unreadCount: 0,
+    pinnedMessages: [],
+  },
+  {
+    id: 'channel-4',
+    name: 'Voice Lounge',
+    type: 'voice',
+    description: 'Casual voice chat',
+    members: ['user-1', 'user-2', 'user-3'],
+    createdAt: new Date('2024-02-01'),
+    unreadCount: 0,
+    pinnedMessages: [],
+  },
+  {
+    id: 'channel-5',
+    name: 'random',
+    type: 'text',
+    description: 'Off-topic conversations and fun stuff',
+    members: ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6'],
+    createdAt: new Date('2024-01-15'),
+    unreadCount: 12,
+    pinnedMessages: [],
+  },
+];
+
+// Sample Servers
+export const sampleServers: Server[] = [
+  {
+    id: 'server-1',
+    name: 'NexusChat Team',
+    icon: 'N',
+    ownerId: 'user-1',
+    members: ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6'],
+    channels: sampleChannels,
+    createdAt: new Date('2024-01-01'),
+    description: 'Official NexusChat development team',
+  },
+  {
+    id: 'server-2',
+    name: 'Design Community',
+    icon: 'D',
+    ownerId: 'user-2',
+    members: ['user-1', 'user-2', 'user-4'],
+    channels: [],
+    createdAt: new Date('2024-02-01'),
+    description: 'A community for designers',
+  },
+  {
+    id: 'server-3',
+    name: 'Gaming Hub',
+    icon: 'G',
+    ownerId: 'user-3',
+    members: ['user-1', 'user-3', 'user-5'],
+    channels: [],
+    createdAt: new Date('2024-03-01'),
+    description: 'Gaming discussions and LFG',
+  },
+];
+
+// Sample Direct Messages
+export const sampleDMs: Channel[] = [
+  {
+    id: 'dm-1',
+    name: 'Sarah Smith',
+    type: 'dm',
+    members: ['user-1', 'user-2'],
+    createdAt: new Date('2024-01-20'),
+    unreadCount: 2,
+    pinnedMessages: [],
+    lastMessage: {
+      id: 'dm-msg-1',
+      content: 'Hey! Did you see the new mockups?',
+      senderId: 'user-2',
+      channelId: 'dm-1',
+      timestamp: new Date(Date.now() - 10 * 60 * 1000),
+      reactions: [],
+      attachments: [],
+      readBy: [],
+    },
+  },
+  {
+    id: 'dm-2',
+    name: 'Mike Johnson',
+    type: 'dm',
+    members: ['user-1', 'user-3'],
+    createdAt: new Date('2024-02-15'),
+    unreadCount: 0,
+    pinnedMessages: [],
+    lastMessage: {
+      id: 'dm-msg-2',
+      content: 'The deployment is complete!',
+      senderId: 'user-1',
+      channelId: 'dm-2',
+      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+      reactions: [],
+      attachments: [],
+      readBy: ['user-3'],
+    },
+  },
+  {
+    id: 'dm-3',
+    name: 'Emily Davis',
+    type: 'dm',
+    members: ['user-1', 'user-4'],
+    createdAt: new Date('2024-03-01'),
+    unreadCount: 5,
+    pinnedMessages: [],
+    lastMessage: {
+      id: 'dm-msg-3',
+      content: 'Can we schedule a quick sync?',
+      senderId: 'user-4',
+      channelId: 'dm-3',
+      timestamp: new Date(Date.now() - 30 * 60 * 1000),
+      reactions: [],
+      attachments: [],
+      readBy: [],
+    },
+  },
+];
+
+// Sample Notifications
+export const sampleNotifications: Notification[] = [
+  {
+    id: 'notif-1',
+    type: 'mention',
+    title: 'New Mention',
+    content: 'Sarah Smith mentioned you in #general',
+    read: false,
+    createdAt: new Date(Date.now() - 5 * 60 * 1000),
+    fromUserId: 'user-2',
+    link: '/chat/server-1/channel-1',
+  },
+  {
+    id: 'notif-2',
+    type: 'friend_request',
+    title: 'Friend Request',
+    content: 'Alex Chen wants to be your friend',
+    read: false,
+    createdAt: new Date(Date.now() - 30 * 60 * 1000),
+    fromUserId: 'user-5',
+    link: '/friends',
+  },
+  {
+    id: 'notif-3',
+    type: 'message',
+    title: 'New Message',
+    content: 'You have 3 new messages in Design Community',
+    read: true,
+    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+    link: '/chat/server-2',
+  },
+  {
+    id: 'notif-4',
+    type: 'system',
+    title: 'System Update',
+    content: 'NexusChat has been updated to version 2.0',
+    read: true,
+    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+  },
+];
+
+// Sample Friend Requests
+export const sampleFriendRequests: FriendRequest[] = [
+  {
+    id: 'fr-1',
+    fromUserId: 'user-5',
+    toUserId: 'user-1',
+    status: 'pending',
+    createdAt: new Date(Date.now() - 30 * 60 * 1000),
+  },
+  {
+    id: 'fr-2',
+    fromUserId: 'user-6',
+    toUserId: 'user-1',
+    status: 'pending',
+    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+  },
+];
+
+// Sample Voice Rooms
+export const sampleVoiceRooms: VoiceRoom[] = [
+  {
+    id: 'voice-1',
+    name: 'Voice Lounge',
+    serverId: 'server-1',
+    participants: [
+      {
+        id: 'vp-1',
+        oderId: 'user-2',
+        isMuted: false,
+        isDeafened: false,
+        isSpeaking: true,
+        isScreenSharing: false,
+        isCameraOn: true,
+      },
+      {
+        id: 'vp-2',
+        oderId: 'user-3',
+        isMuted: true,
+        isDeafened: false,
+        isSpeaking: false,
+        isScreenSharing: false,
+        isCameraOn: false,
+      },
+    ],
+    maxParticipants: 10,
+  },
+];
+
+// Sample Friends List
+export const sampleFriends = ['user-2', 'user-3', 'user-4'];
+export const sampleBlockedUsers = ['user-6'];

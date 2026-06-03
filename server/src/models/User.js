@@ -115,7 +115,7 @@ class User {
         let paramIndex = 2;
 
         for (const [key, col] of Object.entries(allowedFields)) {
-          const val = key.includes('.') ? getNestedVal(data, key) : data[key];
+          const val = data[key] !== undefined ? data[key] : (key.includes('.') ? getNestedVal(data, key) : undefined);
           if (val !== undefined) {
             setClauses.push(`${col} = $${paramIndex}`);
             params.push(val);
